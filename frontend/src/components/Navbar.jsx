@@ -44,7 +44,6 @@ export default function Navbar() {
       transition={{ duration: 0.7, ease: 'easeOut' }}
     >
       <a href="#home" className="navbar-brand">
-        <span className="brand-icon">🐯</span>
         <span className="brand-text">Life of Pi</span>
       </a>
 
