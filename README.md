@@ -1,4 +1,4 @@
-# GB Life of Pi 🐯
+# GB Life of Pi 
 
 An informative website about Yann Martel's *Life of Pi* — exploring the novel's story, characters, themes, and the journey of Pi Patel across the Pacific Ocean.
 
