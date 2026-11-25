@@ -13,6 +13,7 @@ const characters = [
     description:
       'The narrator and main character. Pi is an introspective and philosophical young man who practices Hinduism, Christianity, and Islam simultaneously. His deep spiritual faith and vivid imagination are what ultimately allow him to survive his harrowing ordeal at sea.',
     facts: ['Named after a Paris swimming pool', 'Practices 3 religions at once', 'Son of a zookeeper', 'Survives 227 days at sea'],
+    bonusFact: '"I have nothing to say of my working life, only that a tie is a noose, and inverted though it is, it will hang a man nonetheless." — Pi Patel',
   },
   {
     id: 'richard',
@@ -24,6 +25,7 @@ const characters = [
     description:
       'A Royal Bengal tiger who shares Pi\'s lifeboat. Richard Parker is both a terrifying threat and Pi\'s reason to stay alive. Pi must tame and care for the tiger to survive, creating an unlikely bond forged by necessity and mutual dependence.',
     facts: ['Named due to a paperwork mix-up', 'Weighs 450 pounds', 'Keeps Pi focused on survival', 'Disappears into the jungle at story\'s end'],
+    bonusFact: 'The name "Richard Parker" has an eerie literary history — it was the name of a cannibalized cabin boy in a real 1884 shipwreck, and Edgar Allan Poe used the name in a similar tale decades before it happened.',
   },
   {
     id: 'santosh',
@@ -35,6 +37,7 @@ const characters = [
     description:
       'Pi\'s pragmatic and rational father who owns the Pondicherry Zoo. He instills in Pi a healthy respect and fear of wild animals, particularly Richard Parker. Though not religious himself, he respects his family\'s choices.',
     facts: ['Owned the Pondicherry Zoo', 'A practical rationalist', 'Decided to emigrate to Canada', 'Perished in the shipwreck'],
+    bonusFact: 'Santosh taught Pi a traumatic but life-saving lesson by forcing him to watch a tiger kill a goat — a memory that kept Pi cautious of Richard Parker on the lifeboat.',
   },
   {
     id: 'ravi',
@@ -46,6 +49,7 @@ const characters = [
     description:
       'Pi\'s older brother who frequently teases him about his multiple religious devotions. He represents a more conventional and skeptical view of the world, contrasting with Pi\'s open spiritual curiosity.',
     facts: ['Pi\'s older brother', 'Teased Pi about his religions', 'A sports enthusiast', 'Also perished in the shipwreck'],
+    bonusFact: 'Ravi once joked that if Pi kept joining religions, he\'d soon be praying 60 hours a day. Despite the teasing, the brothers\' relationship shows how faith can be both unifying and isolating.',
   },
 ]
 
@@ -57,7 +61,12 @@ const panelVariants = {
 
 export default function Characters() {
   const [active, setActive] = useState('pi')
+  const [flipped, setFlipped] = useState({})
   const current = characters.find((c) => c.id === active)
+
+  const toggleFlip = (id) => {
+    setFlipped(prev => ({ ...prev, [id]: !prev[id] }))
+  }
 
   return (
     <section id="characters" style={{ background: 'var(--ocean-deep)' }}>
@@ -71,7 +80,7 @@ export default function Characters() {
         >
           Characters
         </motion.h2>
-        <div className="divider"></div>
+        <div className="divider" />
         <motion.p
           className="section-subtitle"
           initial={{ opacity: 0, y: 20 }}
@@ -79,25 +88,47 @@ export default function Characters() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          Meet the key figures who shape Pi's extraordinary journey across the Pacific Ocean.
+          Meet the key figures who shape Pi's extraordinary journey. <em>Click a card to flip it!</em>
         </motion.p>
 
-        <div className="char-tabs">
-          {characters.map((c) => (
-            <motion.button
-              key={c.id}
-              className={`char-tab ${active === c.id ? 'active' : ''}`}
-              style={{ '--char-color': c.color }}
-              onClick={() => setActive(c.id)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>{c.emoji}</span>
-              <span>{c.name}</span>
-            </motion.button>
-          ))}
+        {/* Flip cards grid */}
+        <div className="char-cards-grid">
+          {characters.map((c, i) => {
+            const isFlipped = !!flipped[c.id]
+            return (
+              <motion.div
+                key={c.id}
+                className={`char-flip-wrapper ${active === c.id ? 'ring' : ''}`}
+                style={{ '--char-color': c.color }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => {
+                  setActive(c.id)
+                  toggleFlip(c.id)
+                }}
+              >
+                <div className={`char-flip-card ${isFlipped ? 'flipped' : ''}`}>
+                  {/* Front */}
+                  <div className="char-flip-face char-flip-front">
+                    <span className="char-card-emoji">{c.emoji}</span>
+                    <h4 className="char-card-name">{c.name}</h4>
+                    <span className="char-card-role" style={{ color: c.color }}>{c.role}</span>
+                    <span className="char-card-hint">tap to flip 🔄</span>
+                  </div>
+                  {/* Back */}
+                  <div className="char-flip-face char-flip-back" style={{ borderColor: c.color }}>
+                    <span className="char-card-bonus-label">✨ Bonus Fact</span>
+                    <p className="char-card-bonus-text">{c.bonusFact}</p>
+                  </div>
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
 
+        {/* Detail panel (unchanged) */}
         <AnimatePresence mode="wait">
           <motion.div
             className="char-panel"
@@ -122,7 +153,7 @@ export default function Characters() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 + i * 0.08 }}
                   >
-                    <span className="fact-dot" style={{ background: current.color }}></span>
+                    <span className="fact-dot" style={{ background: current.color }} />
                     {f}
                   </motion.li>
                 ))}

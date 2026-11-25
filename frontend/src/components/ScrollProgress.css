@@ -1,0 +1,92 @@
+/* ─── Scroll XP Progress Bar ─────────────────── */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;          /* above navbar */
+  height: 32px;
+  background: rgba(5, 13, 26, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(8, 145, 178, 0.15);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.scroll-progress-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  background: linear-gradient(90deg,
+    rgba(8, 145, 178, 0.25) 0%,
+    rgba(34, 211, 238, 0.35) 50%,
+    rgba(245, 158, 11, 0.4) 100%);
+  pointer-events: none;
+}
+
+/* Animated shimmer on the fill */
+.scroll-progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 60%,
+    transparent 100%
+  );
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.scroll-progress-info {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  font-size: 0.72rem;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.scroll-progress-label {
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.scroll-progress-stats {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.scroll-pct {
+  font-weight: 700;
+  color: var(--teal-light);
+  font-variant-numeric: tabular-nums;
+  min-width: 32px;
+  text-align: right;
+}
+
+.scroll-badge-count {
+  opacity: 0.75;
+}
+
+/* Push navbar down to make room */
+@media (max-width: 768px) {
+  .scroll-progress-info {
+    padding: 0 16px;
+  }
+}

@@ -1,38 +1,108 @@
-.char-tabs {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
+/* ─── Flip Card Grid ────────────────────────── */
+.char-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   margin-bottom: 40px;
 }
 
-.char-tab {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 24px;
-  border-radius: 50px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-secondary);
+.char-flip-wrapper {
+  perspective: 900px;
   cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transition: all 0.3s;
+  border-radius: 20px;
+  transition: box-shadow 0.3s;
 }
 
-.char-tab:hover {
-  border-color: var(--char-color);
+.char-flip-wrapper.ring {
+  box-shadow: 0 0 0 2px var(--char-color), 0 0 24px color-mix(in srgb, var(--char-color) 30%, transparent);
+}
+
+.char-flip-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 20px;
+}
+
+.char-flip-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.char-flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Front */
+.char-flip-front {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.char-flip-front:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.char-card-emoji {
+  font-size: 3.5rem;
+}
+
+.char-card-name {
+  font-size: 1rem;
   color: var(--text-primary);
+  font-family: var(--font-serif);
 }
 
-.char-tab.active {
-  background: color-mix(in srgb, var(--char-color) 20%, transparent);
-  border-color: var(--char-color);
-  color: #fff;
-  box-shadow: 0 0 20px color-mix(in srgb, var(--char-color) 30%, transparent);
+.char-card-role {
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
+.char-card-hint {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  margin-top: 4px;
+}
+
+/* Back */
+.char-flip-back {
+  background: rgba(255, 255, 255, 0.05);
+  transform: rotateY(180deg);
+  border-width: 2px;
+  padding: 20px;
+  text-align: center;
+}
+
+.char-card-bonus-label {
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.char-card-bonus-text {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  font-style: italic;
+}
+
+/* ─── Existing Styles (tab-bar removed, panel kept) ─── */
 .char-panel {
   display: grid;
   grid-template-columns: 220px 1fr;
@@ -106,6 +176,13 @@
   flex-shrink: 0;
 }
 
+/* ─── Responsive ─────────────────────────────── */
+@media (max-width: 1000px) {
+  .char-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .char-panel {
     grid-template-columns: 1fr;
@@ -118,5 +195,12 @@
     text-align: left;
     display: inline-flex;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .char-cards-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 }

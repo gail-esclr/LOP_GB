@@ -7,6 +7,7 @@ const navLinks = [
   { label: 'About', href: '#about' },
   { label: 'Characters', href: '#characters' },
   { label: 'Themes', href: '#themes' },
+  { label: 'Quiz', href: '#quiz' },
   { label: 'Timeline', href: '#gallery' },
 ]
 

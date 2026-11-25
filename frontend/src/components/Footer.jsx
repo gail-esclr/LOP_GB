@@ -26,7 +26,7 @@ export default function Footer() {
         </p>
 
         <div className="footer-links">
-          {['Home', 'About', 'Characters', 'Themes', 'Timeline'].map((item, i) => {
+          {['Home', 'About', 'Characters', 'Themes', 'Quiz', 'Timeline'].map((item, i) => {
             const href = item === 'Timeline' ? '#gallery' : `#${item.toLowerCase()}`
             return (
               <motion.a

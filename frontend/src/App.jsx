@@ -1,8 +1,13 @@
 import { lazy, Suspense } from 'react'
+import { GameProvider } from './components/GameContext'
+import ScrollProgress from './components/ScrollProgress'
+import BadgeToast from './components/BadgeToast'
+import SectionTracker from './components/SectionTracker'
 import Navbar from './components/Navbar'
 import About from './components/About'
 import Characters from './components/Characters'
 import Themes from './components/Themes'
+import Quiz from './components/Quiz'
 import Gallery from './components/Gallery'
 import Footer from './components/Footer'
 import './App.css'
@@ -28,7 +33,10 @@ function HeroFallback() {
 
 function App() {
   return (
-    <>
+    <GameProvider>
+      <ScrollProgress />
+      <BadgeToast />
+      <SectionTracker />
       <Navbar />
       <main>
         <Suspense fallback={<HeroFallback />}>
@@ -37,10 +45,11 @@ function App() {
         <About />
         <Characters />
         <Themes />
+        <Quiz />
         <Gallery />
       </main>
       <Footer />
-    </>
+    </GameProvider>
   )
 }
 
